@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Flipkart Clone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 🔵 NAVBAR -->
+  <header class="navbar">
+  <div class="nav-left">
+    <a href="index.html" class="sarakart-logo">SaraKart</a>
+  </div>
+
+  <!-- Search box -->
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search for products, brands and more"
+    />
+    <button>🔍</button>
+  </div>
+
+  <!-- Right side buttons & links -->
+  <div class="nav-right">
+    <button id="navUserButton" class="btn btn-login">Login</button>
+    <button id="logoutBtn" class="btn btn-logout" style="display:none;">Logout</button>
+
+    <span class="nav-link">Become a Seller</span>
+    <span class="nav-link">More ▾</span>
+
+    <!-- ❤️ Wishlist link -->
+    <a href="wishlist.html" class="nav-link" style="color:white; text-decoration:none;">
+      ❤️ Wishlist
+    </a>
+
+    <!-- 📦 My Orders link -->
+    <a href="orders.html" class="nav-link" style="color:white; text-decoration:none;">
+      📦 My Orders
+    </a>
+
+    <!-- 🛒 Cart -->
+    <span class="nav-link">
+      <a href="cart.html" style="color:white; text-decoration:none;">
+        🛒 Cart <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </span>
+  </div>
+</header>
+
+
+  <!-- 🟣 CATEGORY BAR -->
+  <nav class="category-bar">
+    <div class="category-item">Mobiles</div>
+    <div class="category-item">Fashion</div>
+    <div class="category-item">Electronics</div>
+    <div class="category-item">Appliances</div>
+    <div class="category-item">Home</div>
+    <div class="category-item">Beauty</div>
+    <div class="category-item">Toys</div>
+    <div class="category-item">Grocery</div>
+  </nav>
+
+  <!-- 🟢 BANNER (UNIQUE STYLE) -->
+  <section class="banner">
+    <div class="banner-text">
+      <h1>Big Saving Days</h1>
+      <p>Upto 70% off on top brands</p>
+      <button class="btn-shop">Shop Now</button>
+    </div>
+    <div class="banner-image"></div>
+  </section>
+
+  <!-- 🟠 MAIN SECTIONS -->
+  <main class="main">
+    <!-- Electronics -->
+    <section class="products-section">
+      <div class="section-header">
+        <h2>Best of Electronics</h2>
+        <a href="#" class="view-all">VIEW ALL →</a>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- JS se products yahan add honge -->
+      </div>
+    </section>
+
+    <!-- Fashion -->
+    <section class="products-section">
+      <div class="section-header">
+        <h2>Best of Fashion</h2>
+        <a href="#" class="view-all">VIEW ALL →</a>
+      </div>
+
+      <div class="product-grid" id="productGridFashion">
+        <!-- JS se fashion products yahan add honge -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ⚫ FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div>
+        <h3>ABOUT</h3>
+        <a href="#">Contact Us</a>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+      </div>
+      <div>
+        <h3>HELP</h3>
+        <a href="#">Payments</a>
+        <a href="#">Shipping</a>
+        <a href="#">Cancellation &amp; Returns</a>
+      </div>
+      <div>
+        <h3>POLICY</h3>
+        <a href="#">Return Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Security</a>
+      </div>
+      <div>
+        <h3>SOCIAL</h3>
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">YouTube</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 My Flipkart Clone
+    </div>
+  </footer>
+
+  <!-- JS file -->
+  <script src="script.js"></script>
+</body>
+</html>

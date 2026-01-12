@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Orders | SaraKart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      background: #020617;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      color: #e5e7eb;
+    }
+
+    .orders-shell {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 12px;
+    }
+
+    .orders-shell h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .orders-empty {
+      margin-top: 32px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .orders-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .order-card {
+      background: rgba(15,23,42,0.96);
+      border-radius: 16px;
+      border: 1px solid rgba(51,65,85,0.9);
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 12px;
+      align-items: center;
+    }
+
+    .order-id {
+      color: #a5b4fc;
+    }
+
+    .order-status {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Status colors */
+    .status-PLACED {
+      background: rgba(59,130,246,0.15);
+      color: #60a5fa;
+    }
+
+    .status-SHIPPED {
+      background: rgba(34,197,94,0.15);
+      color: #4ade80;
+    }
+
+    .status-DELIVERED {
+      background: rgba(22,163,74,0.2);
+      color: #bbf7d0;
+    }
+
+    .status-CANCELLED {
+      background: rgba(248,113,113,0.2);
+      color: #fecaca;
+    }
+
+    .order-main {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .order-items {
+      font-size: 13px;
+    }
+
+    .order-items div {
+      margin-bottom: 2px;
+    }
+
+    .order-total {
+      font-weight: 600;
+      font-size: 14px;
+      color: #bbf7d0;
+    }
+
+    .order-meta {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .order-actions {
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .order-actions button {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .btn-track {
+      background: #22c55e;
+      color: #022c22;
+    }
+
+    .btn-view {
+      background: #0f172a;
+      color: #e5e7eb;
+      border: 1px solid #4b5563;
+    }
+
+    .btn-cancel {
+      background: #fecaca;
+      color: #7f1d1d;
+    }
+
+    .btn-cancel[disabled] {
+      opacity: 0.5;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR simple -->
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="sarakart-logo">SaraKart</a>
+    </div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link" style="color:white;">Home</a>
+      <a href="wishlist.html" class="nav-link" style="color:white;">❤️ Wishlist</a>
+      <a href="cart.html" class="nav-link" style="color:white;">
+        🛒 Cart (<span id="cartCount">0</span>)
+      </a>
+    </div>
+  </header>
+
+  <main class="orders-shell">
+    <h2>My Orders</h2>
+    <div id="ordersEmpty" class="orders-empty" style="display:none;">
+      Abhi tak koi order nahi kiya hai 🙂<br/>
+      Products select karke checkout se order place karein.
+    </div>
+
+    <div id="ordersList" class="orders-list"></div>
+  </main>
+
+  <script>
+    // Cart count (navbar)
+    function getCart() {
+      const saved = localStorage.getItem("cartItems");
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function updateCartCount() {
+      const cart = getCart();
+      const el = document.getElementById("cartCount");
+      if (el) el.textContent = cart.length;
+    }
+
+    // Orders helpers
+    function getOrders() {
+      const saved = localStorage.getItem("orders");
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveOrders(list) {
+      localStorage.setItem("orders", JSON.stringify(list));
+    }
+
+    function renderOrders() {
+      const orders = getOrders();
+      const empty = document.getElementById("ordersEmpty");
+      const listEl = document.getElementById("ordersList");
+
+      if (!orders.length) {
+        empty.style.display = "block";
+        listEl.innerHTML = "";
+        return;
+      }
+
+      empty.style.display = "none";
+      listEl.innerHTML = "";
+
+      orders
+        .slice()             // copy
+        .reverse()           // latest first
+        .forEach((order) => {
+          const card = document.createElement("div");
+          card.className = "order-card";
+
+          const itemsHtml = (order.items || [])
+            .map(
+              (it) =>
+                `<div>• ${it.title} <span style="color:#9ca3af;">(₹${it.price})</span></div>`
+            )
+            .join("");
+
+          const statusText = (order.status || "Placed").toUpperCase();
+
+          card.innerHTML = `
+            <div class="order-header">
+              <span class="order-id">Order #${String(order.id || "").slice(-6)}</span>
+              <span class="order-status status-${statusText}">
+                ${statusText}
+              </span>
+            </div>
+
+            <div class="order-main">
+              <div class="order-items">
+                ${itemsHtml}
+              </div>
+              <div class="order-total">
+                Total: ₹${order.total || 0}
+              </div>
+            </div>
+
+            <div class="order-meta">
+              ${order.createdAt || ""} • ${order.paymentMode || "COD / Online"}
+            </div>
+
+            <div class="order-actions">
+              <button class="btn-track">Track Order</button>
+              <button class="btn-view">View Details</button>
+              <button class="btn-cancel">Cancel</button>
+            </div>
+          `;
+
+          // Buttons functional
+          const trackBtn = card.querySelector(".btn-track");
+          const viewBtn = card.querySelector(".btn-view");
+          const cancelBtn = card.querySelector(".btn-cancel");
+
+          // TRACK
+          trackBtn.addEventListener("click", () => {
+            let msg = "";
+
+            switch (statusText) {
+              case "PLACED":
+                msg = "Order placed ✅\nPacking in progress.";
+                break;
+              case "SHIPPED":
+                msg = "Order shipped 🚚\nAapke city ke raste me hai.";
+                break;
+              case "DELIVERED":
+                msg = "Order delivered ✅\nHope you liked the product!";
+                break;
+              case "CANCELLED":
+                msg = "Order cancelled ❌\nAgar payment hua tha to refund process me hoga.";
+                break;
+              default:
+                msg = "Order status: " + statusText;
+            }
+
+            alert(msg);
+          });
+
+          // VIEW DETAILS
+          viewBtn.addEventListener("click", () => {
+            const itemLines = (order.items || [])
+              .map((it) => `• ${it.title} (₹${it.price})`)
+              .join("\n");
+
+            alert(
+              "Order Details:\n\n" +
+              (itemLines || "No items") +
+              "\n\nTotal: ₹" + (order.total || 0) +
+              "\nStatus: " + statusText +
+              "\nDate: " + (order.createdAt || "") +
+              "\nPayment: " + (order.paymentMode || "COD / Online")
+            );
+          });
+
+          // CANCEL ORDER
+          if (cancelBtn) {
+            if (statusText === "DELIVERED" || statusText === "CANCELLED") {
+              cancelBtn.disabled = true;
+              cancelBtn.textContent = statusText === "DELIVERED" ? "Delivered" : "Cancelled";
+            } else {
+              cancelBtn.addEventListener("click", () => {
+                const ok = confirm("Kya aap sach me ye order cancel karna chahte hain?");
+                if (!ok) return;
+
+                const all = getOrders();
+                const idx = all.findIndex((o) => o.id === order.id);
+                if (idx !== -1) {
+                  all[idx].status = "CANCELLED";
+                  saveOrders(all);
+                  renderOrders(); // turant UI update
+                }
+              });
+            }
+          }
+
+          listEl.appendChild(card);
+        });
+    }
+
+    updateCartCount();
+    renderOrders();
+  </script>
+</body>
+</html>

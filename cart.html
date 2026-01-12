@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Cart | SaraKart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .cart-shell {
+      max-width: 1100px;
+      margin: 24px auto 40px;
+      padding: 0 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .cart-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cart-list {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 20px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 14px 16px;
+      color: #e5e7eb;
+    }
+
+    .cart-header {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.9);
+      padding-bottom: 6px;
+    }
+
+    .empty-cart {
+      font-size: 14px;
+      padding: 20px 4px;
+      text-align: center;
+      color: #9ca3af;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: minmax(0, 2.5fr) minmax(0, 1.1fr);
+      gap: 8px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 13px;
+    }
+
+    .cart-title {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .cart-meta {
+      color: #9ca3af;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .cart-price-line {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .cart-price {
+      font-size: 15px;
+      font-weight: 600;
+      color: #bbf7d0;
+    }
+
+    .cart-qty-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: transparent;
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+    }
+
+    .qty-value {
+      min-width: 24px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .remove-btn {
+      margin-top: 6px;
+      font-size: 12px;
+      border: none;
+      background: transparent;
+      color: #f97316;
+      cursor: pointer;
+    }
+
+    .cart-right-box {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 20px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 14px 16px;
+      color: #e5e7eb;
+      font-size: 13px;
+      height: fit-content;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+
+    .price-label {
+      color: #9ca3af;
+    }
+
+    .price-value {
+      font-weight: 500;
+    }
+
+    .price-total {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 8px;
+      border-top: 1px dashed rgba(75, 85, 99, 0.9);
+      padding-top: 8px;
+    }
+
+    .savings {
+      font-size: 12px;
+      color: #22c55e;
+      margin-top: 4px;
+    }
+
+    .checkout-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px 0;
+      border-radius: 999px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff7b00, #f97316);
+      color: #020617;
+    }
+
+    .continue-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #60a5fa;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (same style) -->
+  <header class="navbar">
+  <div class="nav-left">
+    <a href="index.html" class="sarakart-logo">SaraKart</a>
+  </div>
+
+  <!-- Search box -->
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search for products, brands and more"
+    />
+    <button>🔍</button>
+  </div>
+
+  <!-- Right side buttons & links -->
+  <div class="nav-right">
+    <button id="navUserButton" class="btn btn-login">Login</button>
+    <button id="logoutBtn" class="btn btn-logout" style="display:none;">Logout</button>
+
+    <span class="nav-link">Become a Seller</span>
+    <span class="nav-link">More ▾</span>
+
+    <!-- ❤️ Wishlist -->
+    <a href="wishlist.html" class="nav-link" style="color:white; text-decoration:none;">
+      ❤️ Wishlist
+    </a>
+
+    <!-- 📦 My Orders -->
+    <a href="orders.html" class="nav-link" style="color:white; text-decoration:none;">
+      📦 My Orders
+    </a>
+
+    <!-- 🛒 Cart -->
+    <a href="cart.html" class="nav-link" style="color:white; text-decoration:none;">
+      🛒 Cart (<span class="cart-count" id="cartCount">0</span>)
+    </a>
+  </div>
+</header>
+
+
+  <!-- CART LAYOUT -->
+  <main class="cart-shell">
+    <!-- LEFT: items -->
+    <section class="cart-list">
+      <div class="cart-header">My Cart</div>
+      <div id="cartItemsContainer"></div>
+    </section>
+
+    <!-- RIGHT: price summary -->
+    <aside class="cart-right-box">
+      <div class="cart-header">Price Details</div>
+      <div class="price-row">
+        <span class="price-label">Price (<span id="itemCountText">0</span> items)</span>
+        <span class="price-value" id="priceTotal">₹0</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Discount</span>
+        <span class="price-value" id="discountTotal">- ₹0</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Delivery Charges</span>
+        <span class="price-value" id="deliveryFee">Free</span>
+      </div>
+      <div class="price-total">
+        <span>Total Amount</span>
+        <span id="grandTotal" style="float:right;">₹0</span>
+      </div>
+      <div class="savings" id="savingsText"></div>
+
+      <button class="checkout-btn" id="proceedBtn">Place Order</button>
+      <a href="index.html" class="continue-link">← Continue Shopping</a>
+    </aside>
+  </main>
+
+  <!-- Common JS -->
+  <script src="script.js"></script>
+
+  <!-- Page specific JS -->
+  <script>
+    function getCart() {
+      const saved = localStorage.getItem("cartItems");
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveCart(items) {
+      localStorage.setItem("cartItems", JSON.stringify(items));
+    }
+
+    function updateCartCountLocal() {
+      const cart = getCart();
+      const el = document.getElementById("cartCount");
+      if (el) el.textContent = cart.length;
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cartItemsContainer");
+      const cart = getCart();
+
+      if (!cart.length) {
+        container.innerHTML = '<div class="empty-cart">Your cart is empty.</div>';
+        document.getElementById("itemCountText").textContent = "0";
+        document.getElementById("priceTotal").textContent = "₹0";
+        document.getElementById("discountTotal").textContent = "- ₹0";
+        document.getElementById("grandTotal").textContent = "₹0";
+        document.getElementById("savingsText").textContent = "";
+        return;
+      }
+
+      // quantity default = 1
+      cart.forEach(item => {
+        if (!item.quantity) item.quantity = 1;
+      });
+
+      let priceTotal = 0;
+      let mrpTotal = 0;
+
+      container.innerHTML = "";
+
+      cart.forEach((item, index) => {
+        const price = parseInt((item.price || "0").replace(/,/g, ""), 10);
+        const mrp = price + 500; // demo ke liye MRP = price + 500
+        const linePrice = price * item.quantity;
+        const lineMrp = mrp * item.quantity;
+
+        priceTotal += linePrice;
+        mrpTotal += lineMrp;
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <div>
+            <div class="cart-title">${item.title}</div>
+            <div class="cart-meta">${item.section || ""}</div>
+            <button class="remove-btn">REMOVE</button>
+          </div>
+          <div>
+            <div class="cart-price-line">
+              <span class="cart-price">₹${linePrice.toLocaleString("en-IN")}</span>
+              <span style="font-size:12px; color:#9ca3af; text-decoration:line-through;">
+                ₹${lineMrp.toLocaleString("en-IN")}
+              </span>
+            </div>
+            <div class="cart-qty-row">
+              <button class="qty-btn" data-type="minus">-</button>
+              <span class="qty-value">${item.quantity}</span>
+              <button class="qty-btn" data-type="plus">+</button>
+            </div>
+          </div>
+        `;
+
+        const removeBtn = div.querySelector(".remove-btn");
+        removeBtn.addEventListener("click", () => {
+          cart.splice(index, 1);
+          saveCart(cart);
+          updateCartCountLocal();
+          renderCart();
+        });
+
+        const qtyBtns = div.querySelectorAll(".qty-btn");
+        const qtyValue = div.querySelector(".qty-value");
+
+        qtyBtns.forEach(btn => {
+          btn.addEventListener("click", () => {
+            const type = btn.getAttribute("data-type");
+            if (type === "minus" && item.quantity > 1) {
+              item.quantity--;
+            } else if (type === "plus") {
+              item.quantity++;
+            }
+            qtyValue.textContent = item.quantity;
+            saveCart(cart);
+            renderCart();
+          });
+        });
+
+        container.appendChild(div);
+      });
+
+      const discount = mrpTotal - priceTotal;
+      document.getElementById("itemCountText").textContent = cart.length;
+      document.getElementById("priceTotal").textContent = "₹" + priceTotal.toLocaleString("en-IN");
+      document.getElementById("discountTotal").textContent = "- ₹" + discount.toLocaleString("en-IN");
+      document.getElementById("grandTotal").textContent = "₹" + priceTotal.toLocaleString("en-IN");
+      document.getElementById("savingsText").textContent =
+        discount > 0 ? "You will save ₹" + discount.toLocaleString("en-IN") + " on this order." : "";
+    }
+
+    // Place order button → checkout page
+    document.getElementById("proceedBtn").addEventListener("click", () => {
+      if (!getCart().length) {
+        alert("Cart khaali hai.");
+        return;
+      }
+      window.location.href = "checkout.html";
+    });
+
+    // INIT
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCartCountLocal();
+      renderCart();
+    });
+  </script>
+</body>
+</html>

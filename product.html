@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Details | SaraKart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .detail-shell {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      padding: 0 12px;
+    }
+
+    .detail-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
+      gap: 20px;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow:
+        0 22px 50px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(30, 64, 175, 0.55);
+      padding: 18px 18px 16px;
+      color: #e5e7eb;
+    }
+
+    @media (max-width: 900px) {
+      .detail-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .detail-image-box {
+      border-radius: 18px;
+      background: radial-gradient(circle at 0 0, #22c55e, #0f172a 55%);
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 14px;
+      flex-direction: column;
+    }
+
+    .detail-image-main {
+      width: 80%;
+      aspect-ratio: 4 / 3;
+      border-radius: 24px;
+      background: #020617;
+      box-shadow:
+        0 40px 80px rgba(15, 23, 42, 1),
+        0 0 0 1px rgba(34, 197, 94, 0.7);
+      margin-bottom: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .detail-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge-chip {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .detail-main-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .detail-sub {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .detail-price-line {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .detail-price {
+      font-size: 22px;
+      font-weight: 700;
+      color: #bbf7d0;
+    }
+
+    .detail-mrp {
+      font-size: 13px;
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+
+    .detail-discount {
+      font-size: 13px;
+      color: #4ade80;
+      font-weight: 600;
+    }
+
+    .detail-pill-row {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .detail-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .detail-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff7b00, #f97316);
+      color: #0b1120;
+      box-shadow: 0 18px 35px rgba(248, 113, 22, 0.7);
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      border: none;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #e5e7eb;
+      box-shadow: 0 18px 35px rgba(79, 70, 229, 0.7);
+    }
+
+    .btn-outline {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 8px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      color: #e5e7eb;
+    }
+
+    .detail-list {
+      font-size: 12px;
+      margin-top: 12px;
+      color: #9ca3af;
+    }
+
+    .detail-list li {
+      margin-bottom: 4px;
+    }
+
+    .info-text {
+      color: #fbbf24;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="sarakart-logo">SaraKart</a>
+    </div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link" style="color:white;">Home</a>
+      <a href="wishlist.html" class="nav-link" style="color:white;">❤️ Wishlist</a>
+      <a href="orders.html" class="nav-link" style="color:white;">📦 My Orders</a>
+      <a href="cart.html" class="nav-link" style="color:white;">
+        🛒 Cart (<span id="cartCount">0</span>)
+      </a>
+    </div>
+  </header>
+
+  <!-- PRODUCT DETAIL CONTENT -->
+  <main class="detail-shell">
+    <section class="detail-card" id="detailCard">
+      <div class="detail-image-box">
+        <div class="badge-chip" id="detailTag">Best Seller</div>
+
+        <div class="detail-image-main">
+          <!-- ✅ YAHI IMAGE HAI -->
+          <img id="detailMainImage" class="detail-main-img" src="" alt="Product image" />
+        </div>
+      </div>
+
+      <div>
+        <div class="detail-main-title" id="detailTitle">Product title</div>
+        <div class="detail-sub" id="detailSection">Category • SaraKart</div>
+
+        <div class="detail-price-line">
+          <span class="detail-price" id="detailPrice">₹0</span>
+          <span class="detail-mrp" id="detailMrp">₹0</span>
+          <span class="detail-discount" id="detailDiscount">0% off</span>
+        </div>
+
+        <div class="detail-pill-row">
+          <span class="detail-pill">Free Delivery</span>
+          <span class="detail-pill">7-day Replacement</span>
+          <span class="detail-pill">Pay on Delivery</span>
+          <span class="detail-pill">Top Brand</span>
+        </div>
+
+        <div class="detail-actions">
+          <button class="btn-primary" id="btnDetailAdd">Add to Cart</button>
+          <button class="btn-secondary" id="btnBuyNow">Buy Now</button>
+          <button class="btn-outline" onclick="window.history.back()">← Go Back</button>
+        </div>
+
+        <ul class="detail-list">
+          <li>High quality product with trusted brand assurance.</li>
+          <li>Easy returns and fast delivery in most cities.</li>
+          <li>Ideal for daily use and gifting.</li>
+        </ul>
+
+        <p id="infoText" class="info-text" style="display:none;">
+          (Note: Product data localStorage se aa raha hai. Agar galat dikhe to home se dobara open karein.)
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- SIMPLE JS -->
+  <script>
+    // Cart count ke liye (simple)
+    function getCart() {
+      const saved = localStorage.getItem("cartItems");
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveCart(items) {
+      localStorage.setItem("cartItems", JSON.stringify(items));
+    }
+
+    function updateCartCount() {
+      const el = document.getElementById("cartCount");
+      if (!el) return;
+      const cart = getCart();
+      el.textContent = cart.length;
+    }
+
+    // 🟢 YAHAN SE DETAIL PAGE KA MAIN LOGIC
+    (function initProductDetail() {
+      const raw = localStorage.getItem("selectedProduct");
+
+      const titleEl    = document.getElementById("detailTitle");
+      const sectionEl  = document.getElementById("detailSection");
+      const priceEl    = document.getElementById("detailPrice");
+      const mrpEl      = document.getElementById("detailMrp");
+      const discEl     = document.getElementById("detailDiscount");
+      const tagEl      = document.getElementById("detailTag");
+      const imgEl      = document.getElementById("detailMainImage");
+      const infoTextEl = document.getElementById("infoText");
+
+      if (!raw) {
+        // Agar selectedProduct nahi mila
+        titleEl.textContent = "No product selected";
+        sectionEl.textContent = "Go back and open a product again.";
+        priceEl.textContent = "₹0";
+        mrpEl.textContent   = "";
+        discEl.textContent  = "";
+        imgEl.src = "image/placeholder.jpg";  // agar tumhare paas placeholder ho
+        if (infoTextEl) infoTextEl.style.display = "block";
+        return;
+      }
+
+      let product;
+      try {
+        product = JSON.parse(raw);
+      } catch (e) {
+        console.error("selectedProduct parse error:", e);
+        titleEl.textContent = "Error loading product";
+        if (infoTextEl) infoTextEl.style.display = "block";
+        return;
+      }
+
+      const section = product.section || "Product";
+
+      // ✅ YAHI SE SAARI FIELDS SET HO RAHI HAIN
+      titleEl.textContent   = product.title || "Product";
+      sectionEl.textContent = section + " • SaraKart";
+      priceEl.textContent   = "₹" + (product.price || "0");
+      mrpEl.textContent     = product.mrp ? "₹" + product.mrp : "";
+      discEl.textContent    = product.discount || "";
+      tagEl.textContent     = product.tag || "Best Seller";
+
+      // ✅ IMAGE SET (YAHI SABSE IMPORTANT):
+      imgEl.src = product.image || "image/placeholder.jpg";
+      imgEl.alt = product.title || "Product image";
+
+      if (infoTextEl) infoTextEl.style.display = "block";
+
+      // Add to Cart + Buy Now buttons
+      const btnAdd  = document.getElementById("btnDetailAdd");
+      const btnBuy  = document.getElementById("btnBuyNow");
+
+      if (btnAdd) {
+        btnAdd.addEventListener("click", () => {
+          const cart = getCart();
+          cart.push({
+            title: product.title,
+            price: product.price,
+            section: section,
+          });
+          saveCart(cart);
+          updateCartCount();
+          alert('"' + product.title + '" cart me add ho gaya!');
+        });
+      }
+
+      if (btnBuy) {
+        btnBuy.addEventListener("click", () => {
+          const buyItem = {
+            title: product.title,
+            price: product.price,
+            section: section,
+          };
+          localStorage.setItem("buyNowItem", JSON.stringify(buyItem));
+          window.location.href = "checkout.html?mode=buyNow";
+        });
+      }
+    })();
+
+    updateCartCount();
+  </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wishlist | SaraKart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .wishlist-shell {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 12px;
+    }
+    .wishlist-empty {
+      text-align: center;
+      margin-top: 40px;
+      color: #e5e7eb;
+      font-size: 16px;
+    }
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .wishlist-card {
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(51,65,85,0.9);
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+    .wishlist-title {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .wishlist-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: #bbf7d0;
+      margin-bottom: 8px;
+    }
+    .wishlist-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .wishlist-actions button {
+      flex: 1;
+      border-radius: 999px;
+      padding: 6px 0;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+  <div class="nav-left">
+    <a href="index.html" class="sarakart-logo">SaraKart</a>
+  </div>
+
+  <!-- Search box -->
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search for products, brands and more"
+    />
+    <button>🔍</button>
+  </div>
+
+  <!-- Right side buttons & links -->
+  <div class="nav-right">
+    <button id="navUserButton" class="btn btn-login">Login</button>
+    <button id="logoutBtn" class="btn btn-logout" style="display:none;">Logout</button>
+
+    <span class="nav-link">Become a Seller</span>
+    <span class="nav-link">More ▾</span>
+
+    <!-- ❤️ Wishlist -->
+    <a href="wishlist.html" class="nav-link" style="color:white; text-decoration:none;">
+      ❤️ Wishlist
+    </a>
+
+    <!-- 📦 My Orders -->
+    <a href="orders.html" class="nav-link" style="color:white; text-decoration:none;">
+      📦 My Orders
+    </a>
+
+    <!-- 🛒 Cart -->
+    <a href="cart.html" class="nav-link" style="color:white; text-decoration:none;">
+      🛒 Cart (<span class="cart-count" id="cartCount">0</span>)
+    </a>
+  </div>
+</header>
+
+
+  <main class="wishlist-shell">
+    <h2 style="color:#e5e7eb; margin-bottom:10px;">My Wishlist</h2>
+    <div id="wishlistEmpty" class="wishlist-empty" style="display:none;">
+      Aapki wishlist abhi khali hai 🙂<br />
+      Products me se “♡ Wishlist” pe click karke add kar sakte ho.
+    </div>
+    <div id="wishlistGrid" class="wishlist-grid"></div>
+  </main>
+
+  <script>
+    function getWishlist() {
+      const saved = localStorage.getItem("wishlistItems");
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveWishlist(items) {
+      localStorage.setItem("wishlistItems", JSON.stringify(items));
+    }
+
+    function getCart() {
+      const saved = localStorage.getItem("cartItems");
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveCart(items) {
+      localStorage.setItem("cartItems", JSON.stringify(items));
+    }
+
+    function updateCartCount() {
+      const cart = getCart();
+      const el = document.getElementById("cartCount");
+      if (el) el.textContent = cart.length;
+    }
+
+    function renderWishlist() {
+      const list = getWishlist();
+      const grid = document.getElementById("wishlistGrid");
+      const empty = document.getElementById("wishlistEmpty");
+    }
+
+      if (!list.length) {
+        empty.style.display = "block";
+        grid.innerHTML = "";
+        return;
+      }
+
+      empty.style.display = "none";
+      grid.innerHTML = "";
+
+      list.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "wishlist-card";
+        card.innerHTML = `
+          <div class="wishlist-title">${item.title}</div>
+          <div class="wishlist-price">₹${item.price}</div>
+          <div class="wishlist-actions">
+            <button class="btn-add-cart">Add to Cart</button>
+            <button class="btn-remove">Remove</button>
+          </div>
+        `;
+
+        const [addBtn, removeBtn] = card.querySelectorAll("button");
+
+        addBtn.addEventListener("click", () => {
+  const cart = getCart();
+  cart.push(item);
+  saveCart(cart);
+  updateCartCount();
+  alert(`"${item.title}" cart me add ho gaya!`);   // ✅ Yahi sahi line
+});
+
+        });
+
+        removeBtn.addEventListener("click", () => {
+  let listNow = getWishlist();
+
+  // Safety check: index valid hai?
+  if (index >= 0 && index < listNow.length) {
+    listNow.splice(index, 1);
+    saveWishlist(listNow);
+  }
+
+  renderWishlist(); // 🔥 Always re-render safely
+});
+
+
+    renderWishlist();
+    updateCartCount();
+  </script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel | SaraKart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      background: #020617;
+      color: #e5e7eb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .admin-shell {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 12px;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .admin-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .admin-top-links a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 13px;
+      margin-left: 12px;
+    }
+
+    .admin-card {
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      border: 1px solid rgba(51,65,85,0.9);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .admin-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .admin-row label {
+      font-size: 12px;
+      color: #9ca3af;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .admin-row input,
+    .admin-row select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(75,85,99,0.9);
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      padding: 6px 8px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .admin-col {
+      flex: 1 1 150px;
+    }
+
+    .admin-btn-main {
+      margin-top: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      background: linear-gradient(135deg,#22c55e,#4ade80);
+      color: #022c22;
+    }
+
+    .admin-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .admin-product-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: rgba(15,23,42,0.9);
+      font-size: 13px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .admin-info {
+      display: flex;
+      flex-direction: column;
+      max-width: 65%;
+    }
+
+    .admin-title-text {
+      font-weight: 600;
+    }
+
+    .admin-meta {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-edit,
+    .btn-delete {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: none;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .btn-edit {
+      background: #38bdf8;
+      color: #022c22;
+    }
+
+    .btn-delete {
+      background: #f97373;
+      color: #111827;
+    }
+
+    .admin-empty {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Simple navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="sarakart-logo">SaraKart</a>
+    </div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link" style="color:white;">Home</a>
+      <a href="admin.html" class="nav-link" style="color:white;">Admin</a>
+    </div>
+  </header>
+
+  <main class="admin-shell">
+    <div class="admin-header">
+      <div class="admin-title">Admin – Manage Products</div>
+      <div class="admin-top-links">
+        <a href="index.html">← Back to Home</a>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <section class="admin-card">
+      <div class="admin-row">
+        <div class="admin-col" style="max-width:170px;">
+          <label for="sectionSelect">Section</label>
+          <select id="sectionSelect">
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+          </select>
+        </div>
+        <div class="admin-col">
+          <label for="titleInput">Title</label>
+          <input id="titleInput" placeholder="Product title" />
+        </div>
+        <div class="admin-col">
+          <label for="priceInput">Price (₹)</label>
+          <input id="priceInput" placeholder="e.g. 1499" />
+        </div>
+      </div>
+
+      <div class="admin-row">
+        <div class="admin-col">
+          <label for="mrpInput">MRP (₹)</label>
+          <input id="mrpInput" placeholder="e.g. 1999" />
+        </div>
+        <div class="admin-col">
+          <label for="discountInput">Discount text</label>
+          <input id="discountInput" placeholder="e.g. 25% off" />
+        </div>
+        <div class="admin-col">
+          <label for="tagInput">Tag</label>
+          <input id="tagInput" placeholder="Best Seller / Hot Deal" />
+        </div>
+      </div>
+
+      <div class="admin-row">
+        <div class="admin-col">
+          <label for="imageInput">Image path</label>
+          <input id="imageInput" placeholder="image/narzo.jpg" />
+        </div>
+      </div>
+
+      <button id="saveBtn" class="admin-btn-main">Add Product</button>
+    </section>
+
+    <!-- LIST CARD -->
+    <section class="admin-card">
+      <div style="font-weight:600; margin-bottom:6px;">
+        Products in <span id="listSectionName">Electronics</span>
+      </div>
+      <div id="adminEmpty" class="admin-empty" style="display:none;">
+        Abhi is section me koi product nahi hai.
+      </div>
+      <div id="adminList" class="admin-list"></div>
+    </section>
+  </main>
+
+  <script>
+    // 🔹 helper: localStorage se padhna
+    function loadList(section) {
+      const key = section === "Electronics" ? "electronicsProducts" : "fashionProducts";
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.warn("Error reading", key, e);
+        return [];
+      }
+    }
+
+    // 🔹 helper: localStorage me save karna
+    function saveList(section, list) {
+      const key = section === "Electronics" ? "electronicsProducts" : "fashionProducts";
+      localStorage.setItem(key, JSON.stringify(list));
+    }
+
+    const sectionSelect   = document.getElementById("sectionSelect");
+    const titleInput      = document.getElementById("titleInput");
+    const priceInput      = document.getElementById("priceInput");
+    const mrpInput        = document.getElementById("mrpInput");
+    const discountInput   = document.getElementById("discountInput");
+    const tagInput        = document.getElementById("tagInput");
+    const imageInput      = document.getElementById("imageInput");
+    const saveBtn         = document.getElementById("saveBtn");
+    const adminList       = document.getElementById("adminList");
+    const adminEmpty      = document.getElementById("adminEmpty");
+    const listSectionName = document.getElementById("listSectionName");
+
+    // current edit record
+    let currentEdit = null;   // { section, index }
+
+    // 🔹 List ko screen pe dikhana
+    function renderAdminList(section) {
+      const list = loadList(section);
+      listSectionName.textContent = section;
+
+      adminList.innerHTML = "";
+
+      if (!list.length) {
+        adminEmpty.style.display = "block";
+        return;
+      }
+      adminEmpty.style.display = "none";
+
+      list.forEach((p, index) => {
+        const row = document.createElement("div");
+        row.className = "admin-product-row";
+
+        row.innerHTML = `
+          <div class="admin-info">
+            <div class="admin-title-text">${p.title}</div>
+            <div class="admin-meta">
+              ₹${p.price} • MRP ₹${p.mrp} • ${p.discount || ""} • ${p.tag || ""}
+            </div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </div>
+        `;
+
+        const editBtn   = row.querySelector(".btn-edit");
+        const deleteBtn = row.querySelector(".btn-delete");
+
+        // ✏️ EDIT
+        editBtn.addEventListener("click", () => {
+          titleInput.value    = p.title || "";
+          priceInput.value    = p.price || "";
+          mrpInput.value      = p.mrp || "";
+          discountInput.value = p.discount || "";
+          tagInput.value      = p.tag || "";
+          imageInput.value    = p.image || "";
+
+          currentEdit = { section, index };
+          saveBtn.textContent = "Update Product";
+        });
+
+        // 🗑️ DELETE
+        deleteBtn.addEventListener("click", () => {
+          if (!confirm("Is product ko delete karna hai?")) return;
+
+          const listNow = loadList(section);
+          listNow.splice(index, 1);
+          saveList(section, listNow);
+
+          // agar wahi product edit ho raha tha to edit reset
+          if (currentEdit &&
+              currentEdit.section === section &&
+              currentEdit.index === index) {
+            currentEdit = null;
+            saveBtn.textContent = "Add Product";
+          }
+
+          renderAdminList(section);
+        });
+
+        adminList.appendChild(row);
+      });
+    }
+
+    // 🔹 Save button: Add / Update
+    saveBtn.addEventListener("click", () => {
+      const section = sectionSelect.value;
+      let title   = titleInput.value.trim();
+      let price   = priceInput.value.trim();
+      let mrp     = mrpInput.value.trim();
+      let discount= discountInput.value.trim();
+      let tag     = tagInput.value.trim();
+      let image   = imageInput.value.trim();
+
+      if (!title || !price) {
+        alert("At least title & price bharna zaroori hai.");
+        return;
+      }
+
+      const list = loadList(section);
+
+      const item = {
+        title,
+        price,
+        mrp: mrp || price,          // agar mrp khali, to price use kar lenge
+        discount: discount || "",
+        tag: tag || "",
+        image: image || "",
+      };
+
+      if (currentEdit && currentEdit.section === section) {
+        // UPDATE
+        list[currentEdit.index] = item;
+        currentEdit = null;
+        saveBtn.textContent = "Add Product";
+      } else {
+        // NEW ADD
+        list.push(item);
+      }
+
+      saveList(section, list);
+      renderAdminList(section);
+
+      // form clear
+      titleInput.value = "";
+      priceInput.value = "";
+      mrpInput.value = "";
+      discountInput.value = "";
+      tagInput.value = "";
+      imageInput.value = "";
+    });
+
+    // 🔹 Section change pe list reload
+    sectionSelect.addEventListener("change", () => {
+      currentEdit = null;
+      saveBtn.textContent = "Add Product";
+      renderAdminList(sectionSelect.value);
+    });
+
+    // Page load pe default section render
+    renderAdminList(sectionSelect.value);
+  </script>
+</body>
+</html>
+

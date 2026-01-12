@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | SaraKart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: radial-gradient(circle at top, #1e3a8a 0%, #020617 70%);
+    color: #e2e8f0;
+  }
+
+  /* CENTER CONTAINER */
+  .auth-shell {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  /* SIGNUP CARD */
+  .auth-card {
+    width: 100%;
+    max-width: 380px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(14px);
+    padding: 26px 22px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .auth-card h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .auth-card p {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  /* INPUT FIELDS */
+  label {
+    font-size: 12px;
+    color: #94a3b8;
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    font-size: 14px;
+    outline: none;
+    transition: 0.25s ease;
+  }
+
+  input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+  }
+
+  /* ERROR BOX */
+  #errorBox {
+    background: rgba(239, 68, 68, 0.15);
+    border-left: 3px solid #ef4444;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  /* SIGNUP BUTTON */
+  .auth-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 0;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+    color: #022c22;
+    box-shadow: 0 6px 18px rgba(34,197,94,0.4);
+    transition: 0.25s;
+  }
+
+  .auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(34,197,94,0.55);
+  }
+
+  .auth-card a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: 600;
+  }
+</style>
+
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="nav-left">
+      <a href="index.html" class="sarakart-logo">SaraKart</a>
+      <a href="signup.html">Create an account</a>
+  </div>
+
+  <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search for products, brands and more" />
+      <button>🔍</button>
+  </div>
+
+  <div class="nav-right">
+      <button id="navUserButton" class="btn btn-login">Login</button>
+      <button id="logoutBtn" class="btn btn-logout" style="display:none;">Logout</button>
+
+      <a href="wishlist.html" class="nav-link">❤️ Wishlist</a>
+      <a href="orders.html" class="nav-link">📦 My Orders</a>
+      <a href="cart.html" class="nav-link">🛒 Cart (<span id="cartCount">0</span>)</a>
+  </div>
+</header>
+
+<!-- SIGNUP CARD -->
+<main class="auth-shell">
+  <div class="auth-card">
+
+    <h2>Create your SaraKart account</h2>
+
+    <form id="signupForm">
+      <label>Full Name</label>
+      <input type="text" id="name" />
+
+      <label>Email</label>
+      <input type="email" id="email" />
+
+      <label>Password</label>
+      <input type="password" id="password" />
+
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassword" />
+
+      <p id="errorBox" style="color: red; display:none;"></p>
+
+      <button type="submit" class="auth-btn">Create Account</button>
+
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </form>
+
+  </div>
+</main>
+
+<script src="script.js"></script>
+
+<script>
+  const signupForm = document.getElementById("signupForm");
+  const errorBox = document.getElementById("errorBox");
+
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const confirmPassword = document
+      .getElementById("confirmPassword")
+      .value.trim();
+
+    console.log("Signup submit:", { name, email });
+
+    errorBox.style.display = "none";
+    errorBox.textContent = "";
+
+    if (!name || !email || !password || !confirmPassword) {
+      errorBox.textContent = "Please fill all fields.";
+      errorBox.style.display = "block";
+      return;
+    }
+
+    if (password.length < 6) {
+      errorBox.textContent = "Password must be at least 6 characters.";
+      errorBox.style.display = "block";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      errorBox.textContent = "Passwords do not match.";
+      errorBox.style.display = "block";
+      return;
+    }
+
+    try {
+      const res = await fetch("http://127.0.0.1:5001/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const rawText = await res.text();
+      console.log("Signup raw response:", res.status, rawText);
+
+      if (!res.ok) {
+        errorBox.textContent =
+          "Server error: " + rawText.slice(0, 80);
+        errorBox.style.display = "block";
+        return;
+      }
+
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseErr) {
+        console.error("Parse error:", parseErr);
+        errorBox.textContent = "Server sent invalid JSON.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      console.log("Signup data:", data);
+
+      if (data.success) {
+        alert("Signup successful! Please login with your email & password.");
+        window.location.href = "login.html";
+      } else {
+        errorBox.textContent = data.message || "Signup failed. Try again.";
+        errorBox.style.display = "block";
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      errorBox.textContent = "Server error. Backend not responding!";
+      errorBox.style.display = "block";
+    }
+  });
+</script>
+
+</body>
+</html>
